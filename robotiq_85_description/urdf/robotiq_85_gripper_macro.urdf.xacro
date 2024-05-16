@@ -21,6 +21,31 @@
 		</gazebo>
 	</xacro:macro>
 
+  <xacro:macro name="robotiq_arg2f_base_link" params="prefix">
+    <link name="${prefix}robotiq_arg2f_base_link">
+      <inertial>
+        <origin xyz="8.625E-08 -4.6583E-06 0.03145" rpy="0 0 0" />
+        <mass value="0.22652" />
+        <inertia ixx="0.00020005" ixy="-4.2442E-10" ixz="-2.9069E-10" iyy="0.00017832" iyz="-3.4402E-08" izz="0.00013478" />
+      </inertial>
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://robotiq_85_description/meshes/collision/robotiq_arg2f_base_link.stl" scale="1 1 1"/>
+        </geometry>
+        <material name="">
+          <color rgba="0.1 0.1 0.1 1" />
+        </material>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <mesh filename="package://robotiq_85_description/meshes/collision/robotiq_arg2f_base_link.stl" scale="1 1 1"/>
+        </geometry>
+      </collision>
+    </link>
+  </xacro:macro>
+
 	<xacro:macro name="robotiq_85_gripper" params="prefix parent *origin sim:=false">
 		
 		<!-- The current hardware driver does not depend on ros2_control but we do utilize
@@ -34,10 +59,16 @@
 			<xacro:robotiq_85_gripper_ros2_control name="RobotiqGripperSystem"/>
 		</xacro:if>
 
-		<joint name="${prefix}robotiq_85_base_joint" type="fixed">
+		<!-- <joint name="${prefix}robotiq_arg2f_base_joint" type="fixed">
+			<parent link="${parent}"/>
+			<child link="${prefix}robotiq_arg2f_base_link"/>
+			<xacro:insert_block name="origin"/>
+		</joint> -->
+
+		<joint name="${prefix}robotiq_ft_frame_id_joint" type="fixed">
 			<parent link="${parent}"/>
 			<child link="${prefix}robotiq_85_base_link"/>
-			<xacro:insert_block name="origin"/>
+			<origin xyz="0 0 0" rpy="0 0 0" />
 		</joint>
 
 		<link name="${prefix}robotiq_85_base_link">
